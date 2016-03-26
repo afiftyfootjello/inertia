@@ -49,33 +49,6 @@ public class InertiaUI extends Application {
 		grid.setBottom(xAxis);
 		grid.setLeft(yAxis);
 
-
-		pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			public void handle(MouseEvent me) {
-
-				ply.add(new Point((int)me.getX(),(int)me.getY()));
-
-				if (ply.points.size()>1){
-					
-					if((me.getX() <= ply.points.get(0).getX() + 15 &&
-							me.getX() >= ply.points.get(0).getX() - 15) &&
-							(me.getY() <= ply.points.get(0).getY() + 15 &&
-							me.getX() >= ply.points.get(0).getY() - 15)) {
-						ply.points.remove(ply.points.size()-1);
-						ply.points.add(ply.points.get(0));
-						
-						ply.compute();
-					}
-						int plX_old=ply.points.get(ply.points.size()-2).x;
-						int plY_old=ply.points.get(ply.points.size()-2).y;
-						Line l1 = new Line(plX_old,plY_old,(int)me.getX(),(int)me.getY());
-
-						pane.getChildren().add(l1);
-				}
-			}
-		});
-
 		bpMaster.setCenter(grid);
 		bpMaster.setLeft(input);
 		bpMaster.setBottom(output);
@@ -203,6 +176,35 @@ public class InertiaUI extends Application {
 			ply.points.clear();
 			outputText.setText("");
 			recVec.clear();
+		});
+
+		//mouse listener
+		pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			public void handle(MouseEvent me) {
+
+				ply.add(new Point((int)me.getX(),(int)me.getY()));
+
+				if (ply.points.size()>1){
+
+					//check that this point is not the last
+					if((Math.abs(me.getX()-ply.points.get(0).getX()) < 20 &&
+						Math.abs(me.getY()-ply.points.get(0).getY()) < 20)) {
+						ply.points.remove(ply.points.size()-1);
+						ply.points.add(ply.points.get(0));
+
+						ply.compute();
+
+						outputText.setText("I_x="+ply.moiX+", I_y="+ply.moiY+", A="+ply.area);
+					}
+
+					int plX_old=ply.points.get(ply.points.size()-2).x;
+					int plY_old=ply.points.get(ply.points.size()-2).y;
+					Line l1 = new Line(plX_old,plY_old,(int)me.getX(),(int)me.getY());
+
+					pane.getChildren().add(l1);
+				}
+			}
 		});
 
 		//Create Scene and stage and display and stuff

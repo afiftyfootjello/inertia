@@ -39,10 +39,11 @@ public class Polygon {
 		
 		double area=0;
 
-		for( int i = 0; i < points.size()-2; i ++ ){
-			area += points.get(i+1).x*(points.get(i+2).y-points.get(i).y) + points.get(i+1).y*(points.get(i).x-points.get(i+2).x);
+		for( int i = 0; i < points.size()-1; i ++ ){
+			area += points.get(i).x*points.get(i+1).y-points.get(i).y*points.get(i+1).x;
 		}
-		area /= 2;
+		area +=points.get(points.size()-1).x*points.get(0).y-points.get(points.size()-1).y*points.get(0).x;
+		area /= -2;
 
 		return area;
 
