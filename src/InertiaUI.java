@@ -190,6 +190,8 @@ public class InertiaUI extends Application {
 				}
 			}
 			
+			pane.getChildren().clear();
+			ply.points.clear();
 			outputText.setText("");
 			recVec.clear();
 		});
