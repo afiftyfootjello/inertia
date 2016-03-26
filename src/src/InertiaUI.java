@@ -1,3 +1,4 @@
+package src;
 import java.awt.Point;
 import java.util.Vector;
 
@@ -58,11 +59,10 @@ public class InertiaUI extends Application {
 		    		int plX_old=ply.points.get(ply.points.size()-2).x;
 		    		int plY_old=ply.points.get(ply.points.size()-2).y;
 		    		Line l1 = new Line(plX_old,plY_old,(int)me.getX(),(int)me.getY());
-		    		
 		    		pane.getChildren().add(l1);
-
 		    	}
-		    	//ArrayList<Point> points=points.add(new Point(me.getX(),me.getY()))
+		    	
+		    	
 		    }
 		});
 		
