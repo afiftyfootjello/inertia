@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 public class InertiaUI extends Application {
 
 	Polygon ply = new Polygon();
-	
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		//Layout the layouts
@@ -49,24 +49,33 @@ public class InertiaUI extends Application {
 		grid.setBottom(xAxis);
 		grid.setLeft(yAxis);
 
-		
+
 		pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    public void handle(MouseEvent me) {
-		    	
-		    	ply.add(new Point((int)me.getX(),(int)me.getY()));
-	    		
-		    	if (ply.points.size()>1){
-		    		
-		    		int plX_old=ply.points.get(ply.points.size()-2).x;
-		    		int plY_old=ply.points.get(ply.points.size()-2).y;
-		    		Line l1 = new Line(plX_old,plY_old,(int)me.getX(),(int)me.getY());
-		    		pane.getChildren().add(l1);
-		    	}
-		    	
-		    	
-		    }
+
+			public void handle(MouseEvent me) {
+
+				ply.add(new Point((int)me.getX(),(int)me.getY()));
+
+				if (ply.points.size()>1){
+					
+					if((me.getX() <= ply.points.get(0).getX() + 15 &&
+							me.getX() >= ply.points.get(0).getX() - 15) &&
+							(me.getY() <= ply.points.get(0).getY() + 15 &&
+							me.getX() >= ply.points.get(0).getY() - 15)) {
+						ply.points.remove(ply.points.size()-1);
+						ply.points.add(ply.points.get(0));
+						
+						ply.compute();
+					}
+						int plX_old=ply.points.get(ply.points.size()-2).x;
+						int plY_old=ply.points.get(ply.points.size()-2).y;
+						Line l1 = new Line(plX_old,plY_old,(int)me.getX(),(int)me.getY());
+
+						pane.getChildren().add(l1);
+				}
+	
 		});
-		
+
 		bpMaster.setCenter(grid);
 		bpMaster.setLeft(input);
 		bpMaster.setBottom(output);
@@ -105,13 +114,13 @@ public class InertiaUI extends Application {
 			Text temp = new Text("" + i);
 			xAxis.getChildren().add(temp);
 		}
-		
+
 		//Display output
 		Label outputText = new Label();
 		outputText.setTextAlignment(TextAlignment.CENTER);
 		outputText.setMinHeight(50);
 		output.getChildren().add(outputText);
-		
+
 		//Collect Input
 		Text xTextBox = new Text("Enter x coordinate \nof top left corner");
 		xTextBox.setTextAlignment(TextAlignment.CENTER);
@@ -129,35 +138,35 @@ public class InertiaUI extends Application {
 		wTextBox.setTextAlignment(TextAlignment.CENTER);
 		TextField wTextField = new TextField();
 		Label filler4 = new Label("\n");
-		
+
 		Button mkShape = new Button("Make Rectangle");
 		Label filler5 = new Label("\n");
 		Button inertia = new Button("Calculate Intertia");
 		Label filler6 = new Label("\n");
 		Button reset = new Button("Reset");
-		
+
 		input.getChildren().addAll(xTextBox, xTextField, filler1, yTextBox, yTextField,
 				filler2, hTextBox, hTextField, filler3, wTextBox, wTextField, filler4,
 				mkShape, filler5, inertia, filler6, reset);
-		
+
 		//Button Event Handlers
 		Vector<Rectangle> recVec = new Vector<Rectangle>();
-		
+
 		mkShape.setOnAction(e1 -> {
 			int xPos1 = Integer.parseInt(xTextField.getText());
 			int yPos1 = Integer.parseInt(yTextField.getText());
 			int yPos2 = yPos1 - Integer.parseInt(hTextField.getText());
 			int xPos2 = xPos1 + Integer.parseInt(wTextField.getText());
-			
+
 			recVec.add(new Rectangle((double) xPos1, (double) yPos1,
-					 Double.parseDouble(wTextField.getText()),
-					 Double.parseDouble(hTextField.getText())));
-			
+					Double.parseDouble(wTextField.getText()),
+					Double.parseDouble(hTextField.getText())));
+
 			xTextField.clear();
 			yTextField.clear();
 			hTextField.clear();
 			wTextField.clear();
-			
+
 			for (int i = 20-yPos1; i <= 20-(yPos2+1); i++){
 				for (int j = xPos1; j <= xPos2-1; j++){
 					cells[j][i].setFill(Color.SANDYBROWN);
@@ -165,36 +174,37 @@ public class InertiaUI extends Application {
 				}
 			}
 		});
-		
+
 		inertia.setOnAction(e2 -> {
 			Rectangle[] param = new Rectangle[recVec.size()];
 			for (int i = 0; i <= recVec.size()-1; i++){
 				param[i] = recVec.elementAt(i);
 			}
-			
+
 			double MOI = InertiaCalc(param);
 			outputText.setText("The moment of Inertia for this system is " + MOI);
 		});
-		
+
 		reset.setOnAction(e3 -> {
 			xTextField.clear();
 			yTextField.clear();
 			hTextField.clear();
 			wTextField.clear();
-			
+
 			for (int i = 0; i <= 19; i++) {
 				for (int j = 0; j<= 19; j++){
 					cells[i][j].setFill(Color.WHITE);
 					cells[i][j].setStroke(Color.BLACK);
 				}
 			}
-			
+
 			pane.getChildren().clear();
+			pane.getChildren().add(gp);
 			ply.points.clear();
 			outputText.setText("");
 			recVec.clear();
 		});
-		
+
 		//Create Scene and stage and display and stuff
 		Scene scene = new Scene(bpMaster);
 		stage.setTitle("Inertia Calculator");
@@ -218,32 +228,32 @@ public class InertiaUI extends Application {
 		double NAnum = 0;
 		double NAdenom = 0;
 		double Inertia = 0;
-		
+
 		for(int i = 0; i <= (length-1); i++){
 			Yarray[i] = rectangleArray[i].getY();
-			
+
 			if( Ytop < Yarray[i]){
 				Ytop = Yarray[i];
 			}
-			
+
 			heightarray[i] = rectangleArray[i].getHeight();
 			widtharray[i] = rectangleArray[i].getWidth();
 			areaarray[i] = (heightarray[i]*widtharray[i]);
 		}
-		
+
 		for(int i = 0; i<= (length-1); i++){
 			NAnum = NAnum + areaarray[i]*(Ytop-Yarray[i]+heightarray[i]/2);
 			NAdenom = NAdenom +areaarray[i];
 		}
-		
+
 		double YNeutralAxis = Ytop-NAnum/NAdenom;
-		
+
 		for(int i = 0; i<= (length-1); i++){
 			double deltaY = YNeutralAxis - (Yarray[i]-heightarray[i]/2);
 			Inertia = Inertia + (0.0833333333333333333333333333333)*
 					areaarray[i]*(heightarray[i])*(heightarray[i]) + areaarray[i]*deltaY*deltaY;
 		}
-		
+
 		return Inertia;
 	}
 }
