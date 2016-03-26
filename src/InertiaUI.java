@@ -191,6 +191,7 @@ public class InertiaUI extends Application {
 			}
 			
 			pane.getChildren().clear();
+			pane.getChildren().add(gp);
 			ply.points.clear();
 			outputText.setText("");
 			recVec.clear();
