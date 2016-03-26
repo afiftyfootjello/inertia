@@ -1,5 +1,3 @@
-package src;
-
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -12,20 +10,28 @@ public class Polygon {
 	public double moiY;
 	public double naXDist;
 	public double naYDist;
-	private ArrayList<Point> points;
+	public ArrayList<Point> points = new ArrayList<Point>();
 	
 	
 	public Polygon(){}
 	
+	
+	
 	public Polygon(ArrayList<Point> points) {
 		this.points = points;
 
-		this.area = findArea(points);
-		this.moiX = findMOIX(points);
-		this.moiY = findMOIY(points);
 		
 	}
 	
+	public void add(Point p){
+		this.points.add(p);
+	}
+	
+	public void compute(){
+		this.area = findArea(points);
+		this.moiX = findMOIX(points);
+		this.moiY = findMOIY(points);
+	}
 	
 	private double findArea(ArrayList<Point> points){
 		
