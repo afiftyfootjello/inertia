@@ -123,12 +123,12 @@ public class InertiaUI extends Application {
 		mkShape.setOnAction(e1 -> {
 			int xPos1 = Integer.parseInt(xTextField.getText());
 			int yPos1 = Integer.parseInt(yTextField.getText());
-			int yPos2 = yPos1 - Integer.parseInt(hTextField.getText());
-			int xPos2 = xPos1 + Integer.parseInt(wTextField.getText());
+			int yPos2 = yPos1 - Integer.parseInt(wTextField.getText());
+			int xPos2 = xPos1 + Integer.parseInt(hTextField.getText());
 			
 			recVec.add(new Rectangle((double) xPos1, (double) yPos1,
-					 Double.parseDouble(hTextField.getText()),
-					 Double.parseDouble(wTextField.getText())));
+					 Double.parseDouble(wTextField.getText()),
+					 Double.parseDouble(hTextField.getText())));
 			
 			xTextField.clear();
 			yTextField.clear();
@@ -137,8 +137,8 @@ public class InertiaUI extends Application {
 			
 			for (int i = 20-yPos1; i <= 20-(yPos2+1); i++){
 				for (int j = xPos1; j <= xPos2-1; j++){
-					cells[j][i].setFill(Color.SANDYBROWN);
-					cells[j][i].setStroke(Color.SANDYBROWN);
+					cells[i][j].setFill(Color.SANDYBROWN);
+					cells[i][j].setStroke(Color.SANDYBROWN);
 				}
 			}
 		});
@@ -215,7 +215,8 @@ public class InertiaUI extends Application {
 		
 		for(int i = 0; i<= (length-1); i++){
 			double deltaY = YNeutralAxis - (Yarray[i]-heightarray[i]/2);
-			Inertia = Inertia + (1/12)*areaarray[i]*(heightarray[i])*(heightarray[i]) + areaarray[i]*deltaY*deltaY;
+			Inertia = Inertia + (0.0833333333333333333333333333333)*
+					areaarray[i]*(heightarray[i])*(heightarray[i]) + areaarray[i]*deltaY*deltaY;
 		}
 		
 		return Inertia;
