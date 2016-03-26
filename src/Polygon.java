@@ -29,32 +29,33 @@ public class Polygon {
 		
 		double area=0;
 
-		for( int i = 0; i < points.size(); i += 2 )
-		   area += points.get(i+1).x*(points.get(i+2).y-points.get(i).y) + points.get(i+1).y*(points.get(i).x-points.get(i+2).x);
+		for( int i = 0; i < points.size()-2; i ++ ){
+			area += points.get(i+1).x*(points.get(i+2).y-points.get(i).y) + points.get(i+1).y*(points.get(i).x-points.get(i+2).x);
+		}
 		area /= 2;
-		
+
 		return area;
-		
+
 	}
 	
 	private double findMOIX(ArrayList<Point> points){
 		double moi = 0;
 		
-		for(int i=0; i<points.size(); i++){
-			moi=((points.get(i).y)^2+(points.get(i).y)*(points.get(i+1).y)+(points.get(i+1).y)^2)+((points.get(i).x)*(points.get(i+1).y)-(points.get(i+1).x)*(points.get(i).y));
+		for(int i=0; i<points.size()-2; i++){
+			moi +=((points.get(i).y)^2+(points.get(i).y)*(points.get(i+1).y)+(points.get(i+1).y)^2)+((points.get(i).x)*(points.get(i+1).y)-(points.get(i+1).x)*(points.get(i).y));
 					
 		}
-		return moi;
+		return moi/12;
 	}
 	
 	private double findMOIY(ArrayList<Point> points){
 		double moi = 0;
 		
-		for(int i=0; i<points.size(); i++){
-			moi=((points.get(i).x)^2+(points.get(i).x)*(points.get(i+1).x)+(points.get(i+1).x)^2)+((points.get(i).x)*(points.get(i+1).y)-(points.get(i+1).x)*(points.get(i).y));		
+		for(int i=0; i<points.size()-2; i++){
+			moi +=((points.get(i).x)^2+(points.get(i).x)*(points.get(i+1).x)+(points.get(i+1).x)^2)+((points.get(i).x)*(points.get(i+1).y)-(points.get(i+1).x)*(points.get(i).y));		
 		}
 		
-		return moi;
+		return moi/12;
 	}
 
 }
