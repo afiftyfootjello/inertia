@@ -1,4 +1,5 @@
 package src;
+
 import java.awt.Point;
 import java.util.Vector;
 
@@ -145,8 +146,8 @@ public class InertiaUI extends Application {
 		mkShape.setOnAction(e1 -> {
 			int xPos1 = Integer.parseInt(xTextField.getText());
 			int yPos1 = Integer.parseInt(yTextField.getText());
-			int yPos2 = yPos1 - Integer.parseInt(wTextField.getText());
-			int xPos2 = xPos1 + Integer.parseInt(hTextField.getText());
+			int yPos2 = yPos1 - Integer.parseInt(hTextField.getText());
+			int xPos2 = xPos1 + Integer.parseInt(wTextField.getText());
 			
 			recVec.add(new Rectangle((double) xPos1, (double) yPos1,
 					 Double.parseDouble(wTextField.getText()),
@@ -159,8 +160,8 @@ public class InertiaUI extends Application {
 			
 			for (int i = 20-yPos1; i <= 20-(yPos2+1); i++){
 				for (int j = xPos1; j <= xPos2-1; j++){
-					cells[i][j].setFill(Color.SANDYBROWN);
-					cells[i][j].setStroke(Color.SANDYBROWN);
+					cells[j][i].setFill(Color.SANDYBROWN);
+					cells[j][i].setStroke(Color.SANDYBROWN);
 				}
 			}
 		});
@@ -188,6 +189,8 @@ public class InertiaUI extends Application {
 				}
 			}
 			
+			pane.getChildren().clear();
+			ply.points.clear();
 			outputText.setText("");
 			recVec.clear();
 		});
