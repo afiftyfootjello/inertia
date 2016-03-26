@@ -1,18 +1,21 @@
-package src;
-
+import java.awt.Point;
 import java.util.Vector;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -20,6 +23,8 @@ import javafx.stage.Stage;
 
 public class InertiaUI extends Application {
 
+	Polygon ply = new Polygon();
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		//Layout the layouts
@@ -32,14 +37,35 @@ public class InertiaUI extends Application {
 		output.setAlignment(Pos.CENTER);
 
 		BorderPane grid = new BorderPane();
+		Pane pane = new Pane();
 		GridPane gp = new GridPane();
+		pane.getChildren().add(gp);
 		HBox xAxis = new HBox(117);
 		xAxis.setAlignment(Pos.CENTER_RIGHT);
 		VBox yAxis = new VBox(110);
-		grid.setCenter(gp);
+		grid.setCenter(pane);
 		grid.setBottom(xAxis);
 		grid.setLeft(yAxis);
 
+		
+		pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent me) {
+		    	
+		    	ply.add(new Point((int)me.getX(),(int)me.getY()));
+	    		
+		    	if (ply.points.size()>1){
+		    		
+		    		int plX_old=ply.points.get(ply.points.size()-2).x;
+		    		int plY_old=ply.points.get(ply.points.size()-2).y;
+		    		Line l1 = new Line(plX_old,plY_old,(int)me.getX(),(int)me.getY());
+		    		
+		    		pane.getChildren().add(l1);
+
+		    	}
+		    	//ArrayList<Point> points=points.add(new Point(me.getX(),me.getY()))
+		    }
+		});
+		
 		bpMaster.setCenter(grid);
 		bpMaster.setLeft(input);
 		bpMaster.setBottom(output);
@@ -112,10 +138,6 @@ public class InertiaUI extends Application {
 		input.getChildren().addAll(xTextBox, xTextField, filler1, yTextBox, yTextField,
 				filler2, hTextBox, hTextField, filler3, wTextBox, wTextField, filler4,
 				mkShape, filler5, inertia, filler6, reset);
-		
-		gp.setOnMouseClicked(e0 -> {
-			
-		});
 		
 		//Button Event Handlers
 		Vector<Rectangle> recVec = new Vector<Rectangle>();
