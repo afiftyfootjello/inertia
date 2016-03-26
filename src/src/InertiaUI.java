@@ -73,7 +73,7 @@ public class InertiaUI extends Application {
 
 						pane.getChildren().add(l1);
 				}
-	
+			}
 		});
 
 		bpMaster.setCenter(grid);
